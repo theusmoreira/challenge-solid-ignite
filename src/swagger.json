@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "RentaX Documentation",
-    "description": "This is an API Rent",
+    "title": "Solid Challenge",
+    "description": "This is an challenge to ignite",
     "version": "1.0.0",
     "contact": {
       "name": "Matheus Santos",
@@ -10,14 +10,14 @@
     }
   },
   "paths": {
-    "/categories": {
+    "/users": {
       "post": {
         "tags": [
-          "Category"
+          "User"
         ],
-        "summary": "Create a category",
-        "description": "Create a new category",
-        "operationId": "createCategory",
+        "summary": "Create a user",
+        "description": "Create a new user",
+        "operationId": "createUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -26,11 +26,11 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "Categoria 1"
+                    "example": "John Doe"
                   },
-                  "description": {
+                  "email": {
                     "type": "string",
-                    "example": "Descrição da categoria 1"
+                    "example": "johndoe@example.com"
                   }
                 }
               }
@@ -39,30 +39,112 @@
         },
         "responses": {
           "201": {
-            "description": "Category created",
+            "description": "User created",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "ref": "#/components/schemas/User"
+                }
+              }
             }
           },
-          "500": {
-            "description": "Internal server error",
+          "400": {
+            "description": "User already exists with same email",
             "content": {
               "application/json": {}
             }
           }
         }
       },
-        "get": {
-          "tags": [
-            "Category"
-          ],
-          "summary": "List all categories",
-          "description": "List all categories",
-          "operationId": "listCategories",
-          "responses": {
-            "200": {}
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List all users",
+        "description": "List all users",
+        "operationId": "listUsers",
+        "responses": {
+          "200": {
+            "description": "Users listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a user",
+        "description": "Get a user",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Set user as admin",
+        "description": "Set user as admin",
+        "operationId": "setUserAsAdmin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User set as admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
           }
         }
       }
     }
   }
+}
